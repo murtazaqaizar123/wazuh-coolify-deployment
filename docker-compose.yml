@@ -20,14 +20,14 @@ services:
       - "55000:55000"
     environment:
       INDEXER_URL: https://wazuh.indexer:9200
-      INDEXER_USERNAME: admin
-      INDEXER_PASSWORD: admin
+      INDEXER_USERNAME: ${INDEXER_USERNAME}
+      INDEXER_PASSWORD: ${INDEXER_PASSWORD}
       FILEBEAT_SSL_VERIFICATION_MODE: full
       SSL_CERTIFICATE_AUTHORITIES: /etc/ssl/root-ca.pem
       SSL_CERTIFICATE: /etc/ssl/filebeat.pem
       SSL_KEY: /etc/ssl/filebeat.key
-      API_USERNAME: wazuh-wui
-      API_PASSWORD: MyS3cr37P450r.*-
+      API_USERNAME: ${API_USERNAME}
+      API_PASSWORD: ${API_PASSWORD}
     volumes:
       - wazuh_api_configuration:/var/ossec/api/configuration
       - wazuh_etc:/var/ossec/etc
@@ -109,20 +109,20 @@ services:
         soft: 65536
         hard: 65536
     ports:
-      - 443:5601
+      - 80:5601
     environment:
-      WAZUH_API_URL: https://wazuh.manager
-      DASHBOARD_USERNAME: kibanaserver
-      DASHBOARD_PASSWORD: kibanaserver
-      API_USERNAME: wazuh-wui
-      API_PASSWORD: MyS3cr37P450r.*-
+      WAZUH_API_URL: http://wazuh.manager
+      DASHBOARD_USERNAME: ${DASHBOARD_USERNAME}
+      DASHBOARD_PASSWORD: ${DASHBOARD_PASSWORD}
+      API_USERNAME: ${API_PASSWORD}
+      API_PASSWORD: ${API_PASSWORD}
       SERVER_HOST: 0.0.0.0
       SERVER_PORT: 5601
-      OPENSEARCH_HOSTS: https://wazuh.indexer:9200
-      OPENSEARCH_SSL_VERIFICATIONMODE: certificate
+      OPENSEARCH_HOSTS: http://wazuh.indexer:9200
+      OPENSEARCH_SSL_VERIFICATIONMODE: none
       OPENSEARCH_REQUESTHEADERSALLOWLIST: '["securitytenant","Authorization"]'
       OPENSEARCH_SECURITY_MULTITENANCY_ENABLED: "false"
-      SERVER_SSL_ENABLED: "true"
+      SERVER_SSL_ENABLED: "false"
       OPENSEARCH_SECURITY_READONLY_MODE_ROLES: '["kibana_read_only"]'
       SERVER_SSL_KEY: "/usr/share/wazuh-dashboard/certs/wazuh-dashboard-key.pem"
       SERVER_SSL_CERTIFICATE: "/usr/share/wazuh-dashboard/certs/wazuh-dashboard.pem"
